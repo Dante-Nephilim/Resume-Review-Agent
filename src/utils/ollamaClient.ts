@@ -11,15 +11,18 @@ Analyze the provided resume and provide:
 4. Skills assessment and recommendations for skill development
 `;
 
-export async function analyzeResume(resumeText: string): Promise<string> {
+export async function analyzeResume(resumeText: string, onToken: (token: string) => void): Promise<void> {
   try {
     const response = await ollama.generate({
       model: "llama3.2:1b",
       prompt: resumeText,
       system: SYSTEM_PROMPT,
-      stream: false,
+      stream: true,
     });
-    return response.response;
+
+    for await (const token of response) {
+      onToken(token.response);
+    }
   } catch (error) {
     console.error("Error analyzing resume:", error);
     throw error;

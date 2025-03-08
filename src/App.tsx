@@ -17,9 +17,12 @@ function App() {
 
       // Extract text from PDF
       const text = await extractTextFromPDF(file);
-      // Analyze resume using Ollama
-      const result = await analyzeResume(text);
-      setAnalysis(result);
+
+      // Analyze resume using Ollama with streaming
+      await analyzeResume(text, (token: string) => {
+        // Append each token as it arrives
+        setAnalysis((prev) => (prev || "") + token);
+      });
     } catch (err) {
       setError("Error processing resume. Please try again.");
       console.error(err);
