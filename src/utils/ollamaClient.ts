@@ -1,5 +1,9 @@
 import { Ollama } from "ollama";
 
+// const ollama = new Ollama({
+//   host: "custom-hosted-ollama-server-url",
+// });
+
 const ollama = new Ollama();
 
 const SYSTEM_PROMPT = `
@@ -14,7 +18,7 @@ Analyze the provided resume and provide:
 export async function analyzeResume(resumeText: string, onToken: (token: string) => void): Promise<void> {
   try {
     const response = await ollama.generate({
-      model: "llama3.2:1b",
+      model: "smollm2:135m",
       prompt: resumeText,
       system: SYSTEM_PROMPT,
       stream: true,

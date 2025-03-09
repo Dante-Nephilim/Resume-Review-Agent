@@ -1,54 +1,39 @@
-# React + TypeScript + Vite
+# Resume Review AI Agent
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+ React application for reviewing resumes and providing career advice with Ollama Server.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## DEMO: 
+<a href="https://www.loom.com/share/b55aa915d3634338938531240b62aa01?sid=d22c19de-6297-44b2-89d6-e2454f0b4b5d" target="_blank"><p>Video Demo Link</p>
+<img src="demo.gif"/>
+</a>
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Dev Setup
+- Clone the repo
+- Run `npm install`
+- Run `npm run dev`
+- Make sure Ollama is running, open `http://localhost:11434/`
+- Or you can use hosted Ollama server, by passing the host url in `src/utils/ollamaClient.ts`
+- Pull Ollama model `llama3.2:1b`
+- Open `http://localhost:5173/` in your browser
+- Upload your resume and get analysis
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+---
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Tech Stack
+- React
+- Ollama Server
+- `pdfjs-dist` for parsing the file.
+- `ollama` package for interacting with Ollama Server.
+- `tailwindcss` for styling.
+- `lucide-react` for icons.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+---
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+## Further Enhancements
+- Allow user to chat with the agent
+- Allow multiple Resumes to be uploaded and compared
+
