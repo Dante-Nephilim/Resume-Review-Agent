@@ -5,8 +5,8 @@
 ---
 
 ## DEMO: 
-<a href="https://www.loom.com/share/b55aa915d3634338938531240b62aa01?sid=d22c19de-6297-44b2-89d6-e2454f0b4b5d" target="_blank"><p>Video Demo Link</p>
-<img src="demo.gif"/>
+<a href="https://www.loom.com/share/9b2bc75400044a5c8990a27db9a53411?sid=9068aca8-bd50-40f7-ab52-6bab44249042" target="_blank"><p>Video Demo Link</p>
+<img src="demo.gif" alt="Demo GIF">
 </a>
 
 ---

@@ -18,7 +18,7 @@ Analyze the provided resume and provide:
 export async function analyzeResume(resumeText: string, onToken: (token: string) => void): Promise<void> {
   try {
     const response = await ollama.generate({
-      model: "smollm2:135m",
+      model: "llama3.2:1b",
       prompt: resumeText,
       system: SYSTEM_PROMPT,
       stream: true,
