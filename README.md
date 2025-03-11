@@ -11,7 +11,7 @@
 
 ---
 
-## Dev Setup
+## Dev Setup (V1 - Ollama)
 - Clone the repo
 - Run `npm install`
 - Run `npm run dev`
@@ -21,9 +21,17 @@
 - Open `http://localhost:5173/` in your browser
 - Upload your resume and get analysis
 
+## Dev Setup (V2 - Groq)
+- Clone the repo
+- Run `npm install`
+- Run `npm run dev`
+- Add API key(VITE_GROQ_API_KEY) to `.env` file
+- Open `http://localhost:5173/` in your browser
+- Upload your resume and get analysis
+
 ---
 
-## Tech Stack
+## Tech Stack(V1 - Ollama)
 - React
 - Ollama Server
 - `pdfjs-dist` for parsing the file.
@@ -31,9 +39,18 @@
 - `tailwindcss` for styling.
 - `lucide-react` for icons.
 
+## Tech Stack(V2 - Groq)
+- React
+- `pdfjs-dist` for parsing the file.
+- `groq-sdk` for interacting with Groq Server.
+- `tailwindcss` for styling.
+- `lucide-react` for icons.
+
+
 ---
 
 ## Further Enhancements
 - Allow user to chat with the agent
 - Allow multiple Resumes to be uploaded and compared
+- Ideally the Groq API should be in NextJs API or backend server instead of client handling the API key. 
 
