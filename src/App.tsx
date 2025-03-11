@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { FileUpload } from "./components/FileUpload";
 import { extractTextFromPDF } from "./utils/pdfParser";
-import { analyzeResume } from "./utils/ollamaClient";
+// import { analyzeResume } from "./utils/ollamaClient";
+
 import { Loader2 } from "lucide-react";
+import { analyzeResume } from "./utils/groqClient";
 
 function App() {
   const [isLoading, setIsLoading] = useState(false);

@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.0.12",
+    "dotenv": "^16.4.7",
+    "groq-sdk": "^0.15.0",
     "lucide-react": "^0.479.0",
     "ollama": "^0.5.14",
     "pdfjs-dist": "^4.10.38",
