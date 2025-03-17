@@ -3,6 +3,7 @@ import { FileUpload } from "./components/FileUpload";
 import { extractTextFromPDF } from "./utils/pdfParser";
 import { Loader2 } from "lucide-react";
 import axios from "axios";
+import { Github } from "lucide-react";
 
 export interface Message {
   id: string;
@@ -73,6 +74,15 @@ function App() {
         <div className="text-center">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">AI Resume Review</h1>
           <p className="text-gray-600">Upload your resume for instant AI-powered analysis and career suggestions</p>
+          <a
+            href="https://github.com/sakkaj/Resume-Review-Agent"
+            className="flex justify-center items-center mt-4 gap-4"
+            rel="noopener"
+            target="_blank"
+          >
+            <p>View on Github</p>
+            <Github />
+          </a>
         </div>
         <div className="flex justify-center items-center">
           <FileUpload onFileSelect={handleFileSelect} isLoading={isLoading} />
