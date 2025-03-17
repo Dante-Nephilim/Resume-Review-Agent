@@ -75,7 +75,7 @@ function App() {
           <h1 className="text-3xl font-bold text-gray-900 mb-2">AI Resume Review</h1>
           <p className="text-gray-600">Upload your resume for instant AI-powered analysis and career suggestions</p>
           <a
-            href="https://github.com/sakkaj/Resume-Review-Agent"
+            href="https://github.com/Dante-Nephilim/Resume-Review-Agent"
             className="flex justify-center items-center mt-4 gap-4"
             rel="noopener"
             target="_blank"
