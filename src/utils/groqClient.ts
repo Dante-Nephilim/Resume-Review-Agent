@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseURl = process.env.VITE_NETLIFY_FUNCTIONS_BASE_URL;
+const baseURl = import.meta.env.PROD ? "" : import.meta.env.VITE_NETLIFY_FUNCTIONS_BASE_URL;
 
 export async function analyzeResume(resumeText: string, onToken: (token: string) => void): Promise<void> {
   try {
