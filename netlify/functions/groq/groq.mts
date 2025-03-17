@@ -3,6 +3,7 @@ import Groq from "groq-sdk";
 const client = new Groq({
   apiKey: process.env.GROQ_API_KEY,
 });
+
 const SYSTEM_PROMPT = `
 You are an expert resume reviewer and career advisor.
 Analyze the provided resume and provide:
@@ -11,6 +12,7 @@ Analyze the provided resume and provide:
 3. Career path suggestions based on the candidate's experience
 4. Skills assessment and recommendations for skill development
 `;
+
 const handler = async (request: Request) => {
   const body = await request.json();
 
@@ -45,4 +47,5 @@ const handler = async (request: Request) => {
     },
   });
 };
+
 export default handler;

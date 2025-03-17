@@ -3,11 +3,13 @@ import Groq from "groq-sdk";
 const client = new Groq({
   apiKey: process.env.GROQ_API_KEY,
 });
+
 const SYSTEM_PROMPT = `
 You are an expert resume reviewer and career advisor.
 Analyze the provided message, resume text and list of previous messages and provide:
 1. A valid response for the latest message only.
 `;
+
 const handler = async (request: Request) => {
   const body = await request.json();
   const content = body.message + "\n" + body.allMessages.map((m) => m.role + ": " + m.content).join("\n");
@@ -42,4 +44,5 @@ const handler = async (request: Request) => {
     },
   });
 };
+
 export default handler;

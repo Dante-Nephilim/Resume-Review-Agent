@@ -1,15 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FileUpload } from "./components/FileUpload";
 import { extractTextFromPDF } from "./utils/pdfParser";
-// import { analyzeResume } from "./utils/ollamaClient";
-
 import { Loader2 } from "lucide-react";
-import { analyzeResume, getReplyFromGroq } from "./utils/groqClient";
+import axios from "axios";
 
 export interface Message {
+  id: string;
   role: "user" | "assistant";
   content: string;
 }
+
+const baseURl = import.meta.env.PROD ? "" : import.meta.env.VITE_NETLIFY_FUNCTIONS_BASE_URL;
 
 function App() {
   const [isLoading, setIsLoading] = useState(false);
@@ -21,6 +22,12 @@ function App() {
   const [resumeText, setResumeText] = useState("");
   const [isResponding, setIsResponding] = useState(false);
 
+  useEffect(() => {
+    const messagesElement = document.getElementById("messages");
+    console.log(messagesElement?.lastElementChild);
+    messagesElement?.lastElementChild?.scrollIntoView({ behavior: "smooth" });
+  }, [allMessages.length]);
+
   const handleFileSelect = async (file: File) => {
     try {
       setIsLoading(true);
@@ -31,15 +38,11 @@ function App() {
       setShowChat(false);
       setMessage("");
 
-      // Extract text from PDF
       const text = await extractTextFromPDF(file);
       setResumeText(text);
-      // Analyze resume using Ollama with streaming
-      await analyzeResume(text, (token: string) => {
-        // Append each token as it arrives
-        setAnalysis((prev) => (prev || "") + token);
-        setShowChat(true);
-      });
+      const response = await axios.post(`${baseURl}/.netlify/functions/groq`, { resumeText: text });
+      setAnalysis(response.data || "");
+      setShowChat(true);
     } catch (err) {
       setError("Error processing resume. Please try again.");
       console.error(err);
@@ -51,11 +54,11 @@ function App() {
   const sendMessage = async () => {
     try {
       setIsResponding(true);
-      setAllMessages((prev) => [...prev, { role: "user", content: message }]);
+      setAllMessages((prev) => [...prev, { id: crypto.randomUUID(), role: "user", content: message }]);
       setMessage("");
-      await getReplyFromGroq(message, allMessages, resumeText, (reply: string) => {
-        setAllMessages((prev) => [...prev, { role: "assistant", content: reply }]);
-      });
+      const response = await axios.post(`${baseURl}/.netlify/functions/chat`, { message, allMessages, resumeText });
+      const newId = crypto.randomUUID();
+      setAllMessages((prev) => [...prev, { id: newId, role: "assistant", content: response.data || "" }]);
     } catch (err) {
       setError("Error sending message. Please try again.");
       console.error(err);
@@ -74,24 +77,27 @@ function App() {
         <div className="flex justify-center items-center">
           <FileUpload onFileSelect={handleFileSelect} isLoading={isLoading} />
         </div>
+
         {isLoading && (
           <div className="flex items-center justify-center">
             <Loader2 className="w-8 h-8 animate-spin text-blue-500" />
             <span className="ml-2 text-gray-600">Analyzing your resume...</span>
           </div>
         )}
+
         {error && <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">{error}</div>}
+
         {showChat && (
           <div>
-            {allMessages &&
-              allMessages.map((message, index) => (
-                <div key={index}>
+            <div id="messages">
+              {allMessages.map((message) => (
+                <div key={message.id} id={message.id}>
                   <div>
                     <div>
                       <div
-                        className={`p-4 mb-2 rounded-sm   ${
+                        className={`p-4 mb-4 rounded-sm   ${
                           message.role === "user"
-                            ? "bg-blue-50 text-black-800 ml-auto text-right"
+                            ? "bg-blue-100 text-black-800 ml-auto text-right"
                             : "bg-green-50 text-black-800 mr-auto text-left"
                         }`}
                       >
@@ -101,24 +107,30 @@ function App() {
                   </div>
                 </div>
               ))}
-            <div className="grid grid-cols-[1fr_200px] gap-4">
+            </div>
+            <h2 className="text-2xl font-bold pt-4">Ask Further Questions</h2>
+            <form
+              className="grid grid-cols-[1fr_200px] gap-4"
+              onSubmit={(e) => {
+                e.preventDefault();
+                if (isResponding) return;
+                sendMessage();
+              }}
+            >
               <input
                 type="text"
-                className="p-4 m-2 border-2  rounded-sm border-gray-800"
+                className="p-4 mt-2 border-2  rounded-sm border-gray-800"
                 placeholder="Ask further questions about the resume"
                 onChange={(e) => setMessage(e.target.value)}
                 value={message}
               />
-              <button
-                className="p-4 m-2 text-gray-100 rounded-sm bg-blue-700 cursor-pointer"
-                disabled={isResponding}
-                onClick={sendMessage}
-              >
+              <button className="p-4 mt-2 text-gray-100 rounded-sm bg-blue-700 cursor-pointer" disabled={isResponding}>
                 {isResponding ? "..." : "Send"}
               </button>
-            </div>
+            </form>
           </div>
         )}
+
         {analysis && (
           <>
             <h2 className="text-2xl font-bold border-t-2 border-gray-800 pt-4">Analysis</h2>
